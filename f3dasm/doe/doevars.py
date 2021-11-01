@@ -10,7 +10,7 @@ A dataclass for storing variables (features) during the DoE
 
 from dataclasses import dataclass
 import numpy as np, array
-from .data import DATA
+from data import DATA
 from typing import Optional
 from abc import ABC
 
@@ -20,6 +20,12 @@ from abc import ABC
 @dataclass
 class Material:
     """represents a material"""
+    parameters: dict  # materials can be represeted a variable list of name:value pairs
+
+
+@dataclass
+class Geometry:
+    """represents parametrized geometry"""
     parameters: dict  # materials can be represeted a variable list of name:value pairs
 
 
@@ -56,13 +62,23 @@ class Imperfection:
 
 
 @dataclass
-class REV:
+class Problem:
+    material: Material
+
+@dataclass
+class REV(Problem):
     """Represents an Representative Elementary Volume"""
     
     Lc: float # characteristic length
-    material: Material
+    #material: Material
     microstructure: BaseMicrosructure
     dimesionality: int = 2 # e.g. 2D
+
+@dataclass 
+class Design(Problem):
+    geometry: Geometry
+
+
 
 
 @dataclass
@@ -70,7 +86,8 @@ class DoeVars:
     """Parameters for the design of experiments"""
 
     boundary_conditions: dict  # boundary conditions 
-    rev: REV
+    #rev: REV
+    problem : Problem
     imperfections: Optional[Imperfection] = None
 
     def info(self):
@@ -82,11 +99,11 @@ class DoeVars:
         print('-----------------------------------------------------')
         print('\n')
         print('Boundary conditions:',self.boundary_conditions)
-        print('REV dimensions:',self.rev.dimesionality)
-        print('REV Lc:',self.rev.Lc)
-        print('REV material:',self.rev.material.parameters)
-        print('Microstructure shape:',self.rev.microstructure.shape)
-        print('Microstructure material:',self.rev.microstructure.material.parameters)
+        # print('REV dimensions:',self.rev.dimesionality)
+        # print('REV Lc:',self.rev.Lc)
+        # print('REV material:',self.rev.material.parameters)
+        # print('Microstructure shape:',self.rev.microstructure.shape)
+        # print('Microstructure material:',self.rev.microstructure.material.parameters)
         print('Imperfections:',self.imperfections)
         return '\n'
 
