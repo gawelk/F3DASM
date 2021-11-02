@@ -125,6 +125,10 @@ def create_sim_info(name, abstract_model, job_info, post_processing_fnc=None,
     return sim_info
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> utils-split
 def _manipulate_sim_dict(sim_dict):
     name = sim_dict['name']
     del sim_dict['name']
